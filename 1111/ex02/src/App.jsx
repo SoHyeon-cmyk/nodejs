@@ -1,6 +1,8 @@
 import './App.css';
 import Message from './Message';
 import PersonTable from './PersonTable';
+import Mycomponent from './Mycomponent';
+import ConditionalComponent from './ConditionalComponent';
 
 function App() {
   //PersonTable컴포넌트로 전달할 데이터
@@ -23,6 +25,8 @@ function App() {
       <PersonTable persons = {persons1}/>
       <hr />
       <PersonTable persons = {persons2}/>
+      <Mycomponent>리액트</Mycomponent>
+      <ConditionalComponent isActive={false}></ConditionalComponent>
     </div>    
   );
 }

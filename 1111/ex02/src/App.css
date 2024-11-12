@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+.active {
+  background-color: #d4edda; /* 활성 상태 배경색 */
+  color: #155724; /* 활성 상태 텍스트 색상 */
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid #c3e6cb; /* 활성 상태 테두리 */
+  border-radius: 5px;
+}
+.inactive {
+  background-color: #f8d7da; /* 비활성 상태 배경색 */
+  color: #721c24; /* 비활성 상태 텍스트 색상 */
+  padding: 10px;
+  margin: 10px;
+border: 1px solid #f5c6cb; /* 비활성 상태 테두리 */
+  border-radius: 5px;
+}
