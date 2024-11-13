@@ -1,0 +1,12 @@
+.App {
+  text-align: center;
+}
+
+.counter span{
+  font-size: 15px;
+  margin-right: 20px;
+}
+
+.counter div{
+  margin: 20px;
+}
