@@ -1,0 +1,18 @@
+div.App {
+  border: 1px solid gray;
+  box-shadow: 5px 5px 5px gray; 
+  padding: 40px;
+  margin: 20px;
+  display: inline-block;
+}
+div.App h1 { margin: 10px; }
+div.App button { padding: 0.5em 1em; }
+div.App select {
+  padding: 4px;
+  width: 150px;
+  font-size: 12px;
+}
+div.yellow {background-color:#ffa;}
+div.green {background-color:#dfd;}
+div.blue {background-color:#ccf;}
+div.red {background-color:#fdd;}

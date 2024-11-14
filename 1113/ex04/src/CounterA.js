@@ -1,16 +1,16 @@
-import { useState } from 'react'
+import React from 'react'
 
 
-function CounterA(){
+function CounterA({value,increase}){
 
 
   console.log("CounterA호출됨")
-  const [value, setValue] = useState(0);
+  // const [value, setValue] = useState(0);
 
   return(
     <div className='box'>
       <h1>CounterA</h1>
-      <button onClick={()=> setValue (value + 1)}>{value}</button>
+      <button onClick={increase}>{value}</button>
     </div>
   )
 }

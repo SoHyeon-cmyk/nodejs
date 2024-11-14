@@ -1,0 +1,13 @@
+.clock {
+  text-align: center;
+  width: 200px;
+  border: 1px solid gray;
+  margin: 20px auto;
+}
+
+.clock h1{
+  margin: 10px;
+}
+.clock p{
+  font-size: 14px;
+}
