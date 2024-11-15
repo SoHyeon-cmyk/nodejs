@@ -1,0 +1,19 @@
+.TodoContainer{
+  width: 512px;
+  margin: 6rem auto 0;
+  border-radius: 4px ;
+  overflow: hidden;
+  box-shadow: 0 0 10px gray;
+  .app-title{
+    background-color: #22b8cf;
+    color: white;
+    height: 4rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .content{
+    background-color: whitesmoke;
+  }
+}
