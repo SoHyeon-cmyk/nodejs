@@ -5,7 +5,7 @@ import {Helmet, HelmetProvider} from 'react-helmet-async'
 
 import Header from './Header'
 import Footer from './Footer'
-import Search from '../../pages/Search'
+import Search from './Search'
 
 
 //props로 Main컴포넌트의 자식요소를 전달받음
@@ -24,6 +24,7 @@ const Main = (props) => {
       </Helmet>
       <Header />
       <main id='main' role='main'>
+        <Search />
         {/*main태그의 자식요소로 전달받은 컴포넌트를 추가 */}
         {props.children}
       </main>
