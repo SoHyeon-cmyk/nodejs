@@ -3,6 +3,7 @@ import { Title } from '../styles/career.styles';
 //경력을 입력하는 테이블과 입력된 경력을 보여줄 컴포넌트
 import CareerViewTable from '../components/CareerViewTable'
 import LayoutPage from '../components/LayoutPage';
+import { useAuth } from '../hooks/hooks';
 
 const Career = () => {
   return (

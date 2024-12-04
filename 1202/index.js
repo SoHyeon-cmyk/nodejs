@@ -96,37 +96,64 @@ app.post('/api/users', async (req, res) => {
   }
 });
 
-app.get('/api/loggedInEmail' ,(req,res) =>{
-  const authHeader = req.headers['authorization']
-  // 문자열로 받음(앞에 bearer 빠지고 순수 토큰만 token에 할당)
-  const token =req.headers.authorization.replace('Bearer ' ,'')
+// '/api/loggedInEmail' 엔드포인트 처리, token을 전달받아서 로그인한 사람의 email주소를 되돌려주는 api
+app.get('/api/loggedInEmail', (req, res) => {
+  //리액트로 부터 전달받은 토큰이 정상적인지 확인,
+  //정상적이지 않으면 오류로 응답, 정상적이면 email주소로 응답
+  //토큰은 요청 header의 Authorization에 Bearer 토큰값
+  // console.log(req.headers.authorization)
+
+  //문자열로 받음(앞에 Bearer 빠지고 순수 토큰 만 token에 할당)
+  const token = req.headers.authorization.replace('Bearer ','')
+  // console.log(token)
 
   try{
-    // jwt의 verify함수로 첫번째 인자는 토큰값, 두번쨰는 시크릿 값으로 전달
-    let result = jwt.vertfy(token, 'secret')
-  }
-  catch{
-    console.log(err)
-    res.status(403).json('오류발생')
-
+    //jwt의 verify함수로 첫번째 인자는 토큰값, 두번째 인자는 시크릿코드를 전달 => 데이터베이스의 해당 회원정보로 접근할 수 있음
+    let result = jwt.verify(token, 'secret')
+    //console.log(result)
+    res.send(result.email);//로그인한 회원의 이메일 정보를 react로 반환
+  }catch(err){
+    console.log(err);
+    res.status(403).json('오류발생!')
   }
 })
 
+//:email이라고 쓰면 email이라는 변수로 사용가능(동적 요청)
+app.get('/api/users/:email', async (req, res) => {
+  console.log(req.params)
+  const email = req.params.email;//파라미터로 전달받은 이메일을 변수에 할당
 
-
+  let sql = `SELECT email, 
+    DATE_FORMAT(created_date, '%Y년 %m월 %d일') created_date,
+    DATE_FORMAT(updated_date, '%Y년 %m월 %d일') updated_date 
+    FROM tbl_users
+    WHERE email = ?`;
+  try{
+    //파라미터로 전달받은 이메일로 해당 유저의 이메일정보와 회원가입 날짜와 정보수정 날짜를 rows로 할당
+    let [rows, fields] = await pool.query(sql, [email])
+    res.json(rows[0]);//해당 정보를 react로 반환
+  }catch(err){
+    res.status(500).json('서보 오류 발생');
+  }
+})
 
 //경력 요청
 app.get('/api/career', async (req, res) => {
   try{
+    //데이터베이스에서 잘짜정보를 ㅂ받아ㄷ올때 포멧을 
     let sql = `SELECT id, 
     email, 
     company, 
     position,
     DATE_FORMAT(start_date, '%Y년 %m월 %d일') start_date,
     DATE_FORMAT(end_date, '%Y년 %m월 %d일') end_date
-    FROM tbl_careers`;
+    FROM tbl_careers
+    WHERE email =?
+    `;
+    let token = req.headers.authorization.replace('Bearer','')
+    let {email} = jwt.verify(tokeb, 'secert');
     //mysql가서 career리스트를 받아서 변수에 할당
-    let [results, fields] = await pool.query(sql);
+    let [results, fields] = await pool.query(sql,[email]);
     //리액트한테 받아온 배열 응답하기
     res.json(results);
   }catch(err){
@@ -138,19 +165,20 @@ app.get('/api/career', async (req, res) => {
 //경력 추가
 app.post('/api/career', async (req, res) => {
   //비구조할당으로 req.body로 받아온 데이터를 변수로 분해하여 할당
-  const {company, position, startDate, endDate} = req.body;
+  const token = req.header.authorization.replace('Bearer','')
+  let {email} = jwt.verify(token,'secert')
   console.log(req.body)
   let sql =`INSERT INTO tbl_careers (email, company, position, start_date, end_date) 
   VALUES
   (
-    'test@test.com',
+    ?,
     ?,
     ?,
     STR_TO_DATE(?, '%Y-%m-%d'),
     ${endDate === '' ? null : `STR_TO_DATE(?, '%Y-%m-%d')`}
   )`;//endDate는 값이 없을 경우 null을 전달해야 오류가 발생하지 않는다
   
-  let values = [company, position, startDate];//받아온 데이터를 배열로 묶어줍니다
+  let values = [email,company, position, startDate];//받아온 데이터를 배열로 묶어줍니다
   if(endDate !== ''){
     values.push(endDate);//endDate는 값이 있을경우에만 배열에 추가
   }
