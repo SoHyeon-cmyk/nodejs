@@ -20,6 +20,7 @@ const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
 //jwt 연결
 const jwt = require('jsonwebtoken');
+const { ActivityInput } = require('./client/src/styles/activity.styles');
 //jwt.sign({payload{데이터가 들어가야하는 부분},'tokenkey',{언제까지 유효한지 설정가능})
 
 //mysql설정
@@ -103,7 +104,7 @@ app.get('/api/loggedInEmail', (req, res) => {
   //토큰은 요청 header의 Authorization에 Bearer 토큰값
   // console.log(req.headers.authorization)
 
-  //문자열로 받음(앞에 Bearer 빠지고 순수 토큰 만 token에 할당)
+  //문자열로 받음(앞에 Bearer 빠지고 순수 토큰만 token에 할당)
   const token = req.headers.authorization.replace('Bearer ','')
   // console.log(token)
 
@@ -140,20 +141,21 @@ app.get('/api/users/:email', async (req, res) => {
 //경력 요청
 app.get('/api/career', async (req, res) => {
   try{
-    //데이터베이스에서 잘짜정보를 ㅂ받아ㄷ올때 포멧을 
+    //데이터베이스에서 날짜정보를 받아올때 포맷을 '2024년 1월 1일'로 받아오면 input에 표시되지 않는다 '2024-01-01'로 변경해야 input에 표시된다
     let sql = `SELECT id, 
     email, 
     company, 
     position,
-    DATE_FORMAT(start_date, '%Y년 %m월 %d일') start_date,
-    DATE_FORMAT(end_date, '%Y년 %m월 %d일') end_date
+    DATE_FORMAT(start_date, '%Y-%m-%d') start_date,
+    DATE_FORMAT(end_date, '%Y-%m-%d') end_date
     FROM tbl_careers
-    WHERE email =?
-    `;
-    let token = req.headers.authorization.replace('Bearer','')
-    let {email} = jwt.verify(tokeb, 'secert');
-    //mysql가서 career리스트를 받아서 변수에 할당
-    let [results, fields] = await pool.query(sql,[email]);
+    WHERE email = ?`;
+    //token을 받아온다. req안에있는 headers에 Authorization
+    let token = req.headers.authorization.replace('Bearer ', '');
+    let {email} = jwt.verify(token, 'secret');//email만 추출
+
+    //mysql가서 career리스트를 받아오고, email이 일치하는 커리어만 받아온다
+    let [results, fields] = await pool.query(sql, [email]);
     //리액트한테 받아온 배열 응답하기
     res.json(results);
   }catch(err){
@@ -164,10 +166,13 @@ app.get('/api/career', async (req, res) => {
 
 //경력 추가
 app.post('/api/career', async (req, res) => {
+  //email은 header에 있는 token에 들어있음
+  const token = req.headers.authorization.replace('Bearer ', '');
+  let {email} = jwt.verify(token, 'secret'); //이메일만 뽑아서 쓴다
+  
   //비구조할당으로 req.body로 받아온 데이터를 변수로 분해하여 할당
-  const token = req.header.authorization.replace('Bearer','')
-  let {email} = jwt.verify(token,'secert')
-  console.log(req.body)
+  const {company, position, startDate, endDate} = req.body;
+  //console.log(req.body)
   let sql =`INSERT INTO tbl_careers (email, company, position, start_date, end_date) 
   VALUES
   (
@@ -178,7 +183,7 @@ app.post('/api/career', async (req, res) => {
     ${endDate === '' ? null : `STR_TO_DATE(?, '%Y-%m-%d')`}
   )`;//endDate는 값이 없을 경우 null을 전달해야 오류가 발생하지 않는다
   
-  let values = [email,company, position, startDate];//받아온 데이터를 배열로 묶어줍니다
+  let values = [email, company, position, startDate];//받아온 데이터를 배열로 묶어줍니다
   if(endDate !== ''){
     values.push(endDate);//endDate는 값이 있을경우에만 배열에 추가
   }
@@ -212,7 +217,199 @@ app.delete('/api/career', async (req, res) => {
   } catch (err) {
     res.status(500).json('서버에서 오류 발생함');
   }
+});
+
+//경력 수정
+app.put('/api/careers', async (req, res) => {
+  //react에서 넘겨준 값들
+  //console.log(req.body)
+  //req.body안에서 꺼내올, company, position, startDate, endDate,id를 비구조할당으로 저장
+  const {company, position, startDate, endDate, id} = req.body;
+
+  //로그인 유저가 요청했는지 여부 검사
+  console.log(req.headers.authorization)
+  let token = req.headers.authorization.replace('Bearer ', '');
+  try{
+    jwt.verify(token, 'secret');
+  }catch(err){
+    res.status(403).json('토큰이 만료되었으니 다시 로그인 필요')
+    return;
+  }
+
+  //endDate에 값이 있으면 해당 값을 변수 할당하고, 빈 값이거나 null이면 SQL에서 NULL로 변경
+  let finalEndDate = endDate && endDate !== '' ? endDate : null;
+
+  //정상적인 토큰이라면 mysql가서 수정 요청
+  let sql = `UPDATE tbl_careers
+  SET company = ?,
+  position = ?,
+  start_date = ?,
+  end_date = ?
+  WHERE id = ?`;
+  try{
+    await pool.query(sql, [company, position, startDate, endDate, id])
+    res.send('수정 완료!');
+  }catch(err){
+    console.log(err);
+    res.status(500).json('오류 발생함!')
+  }
 })
+
+//activities get요청(게시글 목록 조회)
+app.get('/api/activities', async (req, res) => {
+  console.log(req.query)
+  let {order, limit, page} = req.query;
+  limit = Number(limit);//문자열로 들어가 있으니 숫자타입으로 바꿔줘야 합니다.
+  page = Number(page);
+  //order = 'dateDesc' 'dateAsc' 'like' 'view'
+  try{
+    let sql =`SELECT a.id,
+    a.title,
+    a.content,
+    a.writer_email,
+    a.created_date,
+    a.updated_date,
+    a.activity_view,
+    IFNULL(b.activity_like, 0) AS activity_like
+  FROM tbl_activities AS a 
+  LEFT OUTER JOIN (
+    SELECT activity_id, COUNT(*) AS like
+    FROM tbl_activity_like
+    GROUP BY activity_id
+  ) AS b
+  ON a.id = b.activity_id
+  WHERE title like ?`
+
+  sql +='LIMIT ? OFFSET ?'
+  //limit에는 한페이지당 볼 갯수 , offset은 시작점 limit*(page-1) -> limit가 4일 경우 page 가 1일떄 ->첫번째 게시물부터,
+  //2일떄 5번쨰 게시물부터, 3일때 9번쨰 게시물
+
+    sql = `SELECT COUNT(*) total_cnt FROM tbl_activities`
+    const [results2] = await pool.query(sql);
+    console.log(results2)
+
+    // 결과를 json으로 리엑트한테 보냄
+    // total_cnt : 전체 게시물 수, ActivityList :페이지에 해당하는 활동 리스트
+    res.json({
+      total_cnt :results2[0].total_cnt,
+    activityList : result
+    })
+
+  }catch{
+    console.log(err)
+    res.status(500).json('오류발생')
+    let [result] = await pool.query(sql,[limit,limit*(pafe-1)])
+  }
+})
+
+sql = `SELECT imf url
+FROM tbl_activity_img
+WHERE activity_id=?`
+for(let i=0; i<results.length; i++){
+  let[imgs] = await pool.query(sql,[results[i].id])
+  console.log(imgs)
+  // img url의 새로운 키값이 만들어짐 배열을 img_url에 대임
+  results[i].img_url = img.map((el) => el.img_url)
+}
+
+sql = `
+SELECT COUNT (*) tota_cnt
+FROM tbl_activities
+WHERE title LIKE ?
+`;
+sql += ' LIMIT ? OFFSET ?'
+
+const token = req.headers.authorization.replace('Bearer' , '');
+const user = jwt.verify(token, 'screct');
+console.log(user)
+
+
+app.get('/api/activities/:id' , async( req,res) =>{
+const id = req.params.id;
+const token = req.headers.authorization.replace('Bearer' , '')
+const user = jwt.verify(token, 'screct')
+
+let sql = `
+  SELECT * FROM tbl_activities
+  WHERE id = ?
+`
+
+try{
+ let [result1] = await pool.query(sql,[id])
+//  res.json(result1) 
+sql = `
+  SELECT COUNT (*) activity_like
+  FROM tbl_activity_like
+  WHERE activity_id -?
+`;
+
+
+let [result2] = await pool.query(sql,[id])
+
+//하트를 누른지 안누른지 확인여부 및 로그인 한 사람이 있음 결과가 있고 없음 없다.
+sql =` 
+SELECT * FROM tbl_activity_like
+WHERE activity_id = ? and email =?
+`
+
+
+let [result3] = await pool.query(sql,[id])
+//이미지 url
+sql =` 
+SELECT * FROM tbl_activity_img
+WHERE activity_id = ?
+`
+
+
+let [result4] = await pool.query(sql,[id])
+//다 하나하나 만들고 합침
+result1[0].activity_like = result2[0].activity_like;
+//좋아요 갯수를 result1에 넣음
+result1[0].liked = result3.length === 0 ? 'no' : 'yes'
+//좋아요 여부
+result1[0].img_url = result4.map((el) => el.img.url);
+
+
+
+
+} catch(err){
+  res.status(500).json('오류 발생')
+}
+
+})
+
+//좋아요 테이블에 추가- 필요한 정보(리엑트가 줘야하는건 게시물의 idㅡ 로그인한 사람의 email)
+app.post('/app/like' ,async(req,res) =>{
+  const id=req.body.id;
+  const token = req.headers.authorization.replace('Bearer', '')
+
+  const user = jwt.verify(token, 'screct')
+
+  let sql = `
+  INSERT INTO tbl_activity_like
+  VALUES (?,?)`;
+
+  try{
+    await pool.query(sql,[id,user.email])
+    res.json('추가 성공')
+  }catch(err){
+    console.log(err)
+  }
+})
+
+app.delete('/api/like' ,async(req,res) =>{
+const id = req.body.id
+
+const token = req.headers.authorization.replace('Bearer' ,'')
+const user = jwt.verify(token, 'secret')
+
+let sql = `
+  DELECT FROM tbl_activity_like
+  WHERE activity_id = ? and email = ?;
+`
+})
+
+
 
 //모든 사원 조회
 app.get('/emp',(req, res) => {
