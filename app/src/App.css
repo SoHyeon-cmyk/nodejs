@@ -1,0 +1,28 @@
+*{
+  box-sizing: border-box;
+}
+.black-nav{
+  width: 100%;
+  padding: 20px;
+  color: #fff;
+  background-color: black;
+}
+.list {
+  text-align: left;
+  padding:20px;
+    border-bottom: 1px solid #ddd;
+}
+.modal{
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  background-color: #ddd;
+}
+h4{
+  user-select: none;
+  cursor: pointer;
+}
+input{
+  outline: none;
+  margin-right: 10px;
+}

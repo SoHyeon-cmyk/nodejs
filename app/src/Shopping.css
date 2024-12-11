@@ -1,0 +1,45 @@
+.mainBg{
+  height: 500px;
+  background-image: url(img/image.png);
+  background-size: cover;
+  width: 100%;
+}
+.mainBg img{
+  width: 100%;
+}
+
+.mt20{margin-top: 20px;}
+
+.title{
+  text-align: center;
+}
+.title p{text-align: center; line-height: 200%;}
+.in{}
+.in h2, .in h1{text-align: center;}
+
+.img{
+  background-image: url(img/675267d884723_warm.gif);
+  height: 320px;  
+  width: 320px;
+}
+.col{
+  display: flex;
+}
+.row{
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.price{
+  font-weight: bold;
+}
+
+.s-title{
+  font-size: 16px;
+}
+
+.category{
+  color: #ccc;
+  font-size: 12px;
+
+}
