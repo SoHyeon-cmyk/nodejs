@@ -1,0 +1,40 @@
+.main-bg{
+  /* height: 500px; */
+ /*  background-image: url('./img/img.jpg'); */
+  background-size: cover;
+  width: 100%
+}
+.main-bg img{width: 100%}
+.mt20{margin-top: 20px;}
+.title{text-align: center;}
+.title p{
+  line-height: 200%;
+}
+.in{}
+.in h2, .in h1{text-align: center;}
+.cards-container{width: 1200px; margin: 0 auto; width: 100%;display: flex; 
+  justify-content: space-between; padding: 0 20px; box-sizing: border-box;}
+.cards-container a{text-decoration: none; }
+.alert{width: 100%; text-align: center; background: red; color: #fff; padding: 0 10px;}
+.price{
+  font-weight: bold;
+}
+.in .row{
+  display: flex;
+}
+.s-title{
+  font-size: 16px;
+}
+.category{
+  color: #959595;
+  font-size: 12px;
+}
+.cartTable{width: 100%; padding: 0 30px; box-sizing: border-box; max-width: 1000px; margin: 0 auto;}
+.cartTable table{border-collapse: collapse; border: 1px solid #ddd;}
+
+.cartTable table tr th{border: 1px solid #ddd; padding: 5px 20px; font-size: 14px;}
+.cartTable table tr th:first-child{width: 10%;}
+.cartTable table tr th:nth-child(2){width: 70%;}
+.cartTable table tr th:nth-child(3){width: 10%;}
+.cartTable table tr th:nth-child(4){width: 10%;}
+.cartTable table tr th td{border: 1px solid #ddd;padding: 5px 10px ; font-size: 14px; text-align: center; }
