@@ -20,7 +20,6 @@ const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
 //jwt 연결
 const jwt = require('jsonwebtoken');
-const { ActivityInput } = require('./client/src/styles/activity.styles');
 //jwt.sign({payload{데이터가 들어가야하는 부분},'tokenkey',{언제까지 유효한지 설정가능})
 
 //mysql설정
@@ -257,159 +256,192 @@ app.put('/api/careers', async (req, res) => {
 
 //activities get요청(게시글 목록 조회)
 app.get('/api/activities', async (req, res) => {
-  console.log(req.query)
-  let {order, limit, page} = req.query;
+  //console.log(req.query)
+  let {order, limit, page, q} = req.query;
   limit = Number(limit);//문자열로 들어가 있으니 숫자타입으로 바꿔줘야 합니다.
   page = Number(page);
   //order = 'dateDesc' 'dateAsc' 'like' 'view'
   try{
-    let sql =`SELECT a.id,
-    a.title,
-    a.content,
-    a.writer_email,
-    a.created_date,
-    a.updated_date,
-    a.activity_view,
-    IFNULL(b.activity_like, 0) AS activity_like
-  FROM tbl_activities AS a 
-  LEFT OUTER JOIN (
-    SELECT activity_id, COUNT(*) AS like
-    FROM tbl_activity_like
-    GROUP BY activity_id
-  ) AS b
-  ON a.id = b.activity_id
-  WHERE title like ?`
+    let sql = `SELECT c.id,
+      c.title,
+      c.content,
+      c.writer_email,
+      c.created_date,
+      c.updated_date,
+      c.activity_view,
+      c.activity_like,
+      if(d.email IS NULL, 'no', 'yes') liked 
+      FROM (SELECT a.id,
+      a.title,
+      a.content,
+      a.writer_email,
+      a.created_date,
+      a.updated_date,
+      a.activity_view,
+      IFNULL(b.ac_like, 0) AS activity_like
+      FROM tbl_activities AS a 
+      LEFT OUTER JOIN (
+        SELECT activity_id, COUNT(*) AS ac_like
+        FROM tbl_activity_like
+        GROUP BY activity_id
+      ) AS b
+      ON a.id = b.activity_id
+    ) AS c 
+      LEFT OUTER JOIN (
+      SELECT * FROM tbl_activity_like
+      WHERE email = ?
+    ) AS d
+    ON c.id = d.activity_id
+    WHERE title like ?
+    `; //기본적으로 여기까지는 똑같다.
 
-  sql +='LIMIT ? OFFSET ?'
-  //limit에는 한페이지당 볼 갯수 , offset은 시작점 limit*(page-1) -> limit가 4일 경우 page 가 1일떄 ->첫번째 게시물부터,
-  //2일떄 5번쨰 게시물부터, 3일때 9번쨰 게시물
+    //order에 무엇이 붙어있느냐에 따라 정렬이 변경
+    if(order === 'view'){//조회수에 따라 내림차순정렬
+      sql += ' ORDER BY activity_view DESC';
+    }else if(order === 'like'){//좋아요수에 따라 내림차순 정렬
+      sql += ' ORDER BY activity_like DESC';
+    }else if(order === 'dateAsc'){//생성된 날짜순으로 오름차순 정렬
+      sql += ' ORDER BY created_date ASC';
+    }else{//생성된 날짜순으로 내림차순
+      sql += ' ORDER BY created_date DESC';
+    }
+    sql += ' LIMIT ? OFFSET ?';
+    
+    //로그인한 사람의 이메일 정보
+    const token = req.headers.authorization.replace('Bearer ', '');
+    //verify로 jwt토큰을 검증
+    const user = jwt.verify(token, 'secret');
+    console.log(user)
+    
+    //limit에는 한페이지당 볼 갯수, offset은 시작점(limit *(page-1)) -> limit가 4일경우 page가 1일때 ->첫번째 게시물부터, 2일때->5번째 게시물부터, 3일때->9번째 게시물 부터
+    let [results] = await pool.query(sql, [user.email, `%${q}%`,limit, limit*(page-1)])
+    console.log(results)
 
-    sql = `SELECT COUNT(*) total_cnt FROM tbl_activities`
-    const [results2] = await pool.query(sql);
-    console.log(results2)
-
-    // 결과를 json으로 리엑트한테 보냄
-    // total_cnt : 전체 게시물 수, ActivityList :페이지에 해당하는 활동 리스트
+    //각 게시물에 대한 이미지 가져오기
+    sql = `SELECT img_url
+    FROM tbl_activity_img
+    WHERE activity_id=?`;
+    //각각의 게시물 이미지 url을 각 객체속에 추가
+    for(let i=0; i < results.length; i++){
+      let [imgs] = await pool.query(sql, [results[i].id])
+      //console.log(imgs)
+      //img_url의 새로운 키값이 만들어짐, 배열을 img_url에 대입
+      results[i].img_url = imgs.map((el) => el.img_url);
+    }
+    //console.log(results)
+    //전체 게시물 갯수 조회
+    sql = `
+      SELECT COUNT(*) total_cnt 
+      FROM tbl_activities
+      WHERE title LIKE ?
+    `;
+    //실행 결과를 results2에 저장
+    const [results2] = await pool.query(sql,[`%${q}%`]);
+    //console.log(results2); 
+    
+    //결과를 json으로 리액트한테 보내줍니다.
+    //total_cnt : 전체 게시물 수, activityList: 페이지에 해당하는 활동 리스트
     res.json({
-      total_cnt :results2[0].total_cnt,
-    activityList : result
-    })
-
-  }catch{
-    console.log(err)
-    res.status(500).json('오류발생')
-    let [result] = await pool.query(sql,[limit,limit*(pafe-1)])
+      total_cnt : results2[0].total_cnt,
+      activityList : results
+    });
+  }catch(err){
+    console.log(err);
+    res.status(500).json('오류발생했음');
   }
 })
 
-sql = `SELECT imf url
-FROM tbl_activity_img
-WHERE activity_id=?`
-for(let i=0; i<results.length; i++){
-  let[imgs] = await pool.query(sql,[results[i].id])
-  console.log(imgs)
-  // img url의 새로운 키값이 만들어짐 배열을 img_url에 대임
-  results[i].img_url = img.map((el) => el.img_url)
-}
+app.get('/api/activities/:id', async (req, res) => {
+  const id = req.params.id;//리액트에서 전달받은 게시물 id
+  //console.log(id)
+  //아이디 인증
+  const token = req.headers.authorization.replace('Bearer ', '')
+  const user = jwt.verify(token, 'secret');
 
-sql = `
-SELECT COUNT (*) tota_cnt
-FROM tbl_activities
-WHERE title LIKE ?
-`;
-sql += ' LIMIT ? OFFSET ?'
-
-const token = req.headers.authorization.replace('Bearer' , '');
-const user = jwt.verify(token, 'screct');
-console.log(user)
-
-
-app.get('/api/activities/:id' , async( req,res) =>{
-const id = req.params.id;
-const token = req.headers.authorization.replace('Bearer' , '')
-const user = jwt.verify(token, 'screct')
-
-let sql = `
-  SELECT * FROM tbl_activities
-  WHERE id = ?
-`
-
-try{
- let [result1] = await pool.query(sql,[id])
-//  res.json(result1) 
-sql = `
-  SELECT COUNT (*) activity_like
-  FROM tbl_activity_like
-  WHERE activity_id -?
-`;
-
-
-let [result2] = await pool.query(sql,[id])
-
-//하트를 누른지 안누른지 확인여부 및 로그인 한 사람이 있음 결과가 있고 없음 없다.
-sql =` 
-SELECT * FROM tbl_activity_like
-WHERE activity_id = ? and email =?
-`
-
-
-let [result3] = await pool.query(sql,[id])
-//이미지 url
-sql =` 
-SELECT * FROM tbl_activity_img
-WHERE activity_id = ?
-`
-
-
-let [result4] = await pool.query(sql,[id])
-//다 하나하나 만들고 합침
-result1[0].activity_like = result2[0].activity_like;
-//좋아요 갯수를 result1에 넣음
-result1[0].liked = result3.length === 0 ? 'no' : 'yes'
-//좋아요 여부
-result1[0].img_url = result4.map((el) => el.img.url);
-
-
-
-
-} catch(err){
-  res.status(500).json('오류 발생')
-}
-
-})
-
-//좋아요 테이블에 추가- 필요한 정보(리엑트가 줘야하는건 게시물의 idㅡ 로그인한 사람의 email)
-app.post('/app/like' ,async(req,res) =>{
-  const id=req.body.id;
-  const token = req.headers.authorization.replace('Bearer', '')
-
-  const user = jwt.verify(token, 'screct')
-
+  //activities 테이블 조회(조회수까지)
   let sql = `
-  INSERT INTO tbl_activity_like
-  VALUES (?,?)`;
+    SELECT * FROM tbl_activities
+    WHERE id = ?
+  `;//조회수까지 나옴
 
   try{
-    await pool.query(sql,[id,user.email])
-    res.json('추가 성공')
+    let [result1] = await pool.query(sql, [id]);
+    //res.json(result1)
+    //좋아요 갯수
+    sql = `
+      SELECT COUNT(*) activity_like
+      FROM tbl_activity_like
+      WHERE activity_id = ?
+    `;
+    let [result2] = await pool.query(sql, [id])
+
+    //하트를 누른지 안누른지 확인여부 & 로그인한 사람이 있다면, 결과가 있고, 아니면 없을것이다
+    sql = `
+      SELECT * FROM tbl_activity_like
+      WHERE activity_id = ? and email = ?
+    `;
+
+    let [result3] = await pool.query(sql, [id, user.email])
+    
+    //이미지 url
+    sql = `
+      SELECT * FROM tbl_activity_img
+      WHERE activity_id = ?
+    `;
+
+    let [result4] = await pool.query(sql, [id]);
+
+    //다 하나하나 만들고 이제 하나로 합칩니다.
+    result1[0].activity_like = result2[0].activity_like;//좋아요 갯수를 result1에 넣어준다.
+    result1[0].liked = result3.length === 0 ? 'no' : 'yes'; //좋아요 눌렀는지 안눌렀는지 여부
+    result1[0].img_url = result4.map((el) => el.img_url);//이미지 url
+    //console.log(result1[0])
+    //모두다 result[0]에 넣어주고 리액트로 반환
+    res.json(result1[0])
   }catch(err){
-    console.log(err)
+    res.status(500).json('오류발생했음')
   }
 })
 
-app.delete('/api/like' ,async(req,res) =>{
-const id = req.body.id
+//좋아요 테이블에 추가 - 필요한 정보(리액트가 줘야하는건 게시물의 id, 로그인한 사람의 email)
+app.post('/api/like', async (req, res) => {
+  const id = req.body.id; //body안에 id가 들어 있음
+  const token = req.headers.authorization.replace('Bearer ', '')
 
-const token = req.headers.authorization.replace('Bearer' ,'')
-const user = jwt.verify(token, 'secret')
+  const user = jwt.verify(token, 'secret');
 
-let sql = `
-  DELECT FROM tbl_activity_like
-  WHERE activity_id = ? and email = ?;
-`
+  let sql = `
+    INSERT INTO tbl_activity_like
+    VALUES (?, ?);
+  `; //첫번째 ? = 게시물 id, 두번째 ? = email
+
+  try{
+    await pool.query(sql, [id, user.email])
+    res.json('추가 성공!')
+  }catch(err){
+    console.log(err)
+    res.status(500).json('오류발생했음')
+  }
 })
 
+//좋아요 테이블에서 삭제
+app.delete('/api/like', async (req, res) => {
+  const id = req.body.id;
+  const token = req.headers.authorization.replace('Bearer ', '')
+  const user = jwt.verify(token, 'secret');
 
+  let sql = `
+    DELETE FROM tbl_activity_like
+    WHERE activity_id = ? and email = ?;
+  `;
+  try{
+    await pool.query(sql, [id, user.email])
+    res.json('삭제 성공!')
+  }catch(err){
+    console.log(err)
+    res.status(500).json('오류발생했음')
+  }
+})
 
 //모든 사원 조회
 app.get('/emp',(req, res) => {

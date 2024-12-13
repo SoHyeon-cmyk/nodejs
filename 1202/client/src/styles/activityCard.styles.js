@@ -7,7 +7,7 @@ export const CardWrap = styled.div`
   width:350px;
 `;
 
-//props로 전달받은 imgURL값이 null이면 default이미지로 배경이미지를 적용하고 null이 아니면 imgURL값을 배경이미지로 적용
+//props로 전달받은 imgURL값이 undefined이면 default이미지로 배경이미지를 적용하고 null이 아니면 imgURL값을 배경이미지로 적용
 export const CardImg = styled.div`
   background-image: url(${(props) => props.imgURL === undefined ? 'images/activity-default.jpg' : props.imgURL});
   height:250px;
@@ -15,11 +15,6 @@ export const CardImg = styled.div`
   background-position:center;
   position:relative;
 `;
-const onOrderChagne =(e) =>{
-
-
-console.log()
-}
 
 export const CardContent = styled.div`
   padding:15px 20px;

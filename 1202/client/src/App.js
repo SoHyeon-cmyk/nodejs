@@ -23,7 +23,7 @@ function App() {
           <Route path="/" element={<Overview />}/>
           <Route path="/career" element={<Career />}/>
           <Route path="/activity" element={<Activity />}/>
-          <Route path='/actvity/:id' element={<ActivityDetail/>}/>
+          <Route path='/activity/:id' element={<ActivityDetail/>}/>
           {/*/login패스경로로 Login컴포넌트를 설정 */}
           <Route path="/login" element={<Login />}/>
           {/*Signup컴포넌트 설정 */}
