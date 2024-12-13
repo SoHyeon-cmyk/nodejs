@@ -1,3 +1,5 @@
+ul{list-style: none;}
+a{text-decoration: none; color: #222;}
 .main-bg{
   /* height: 500px; */
  /*  background-image: url('./img/img.jpg'); */
@@ -38,3 +40,36 @@
 .cartTable table tr th:nth-child(3){width: 10%;}
 .cartTable table tr th:nth-child(4){width: 10%;}
 .cartTable table tr th td{border: 1px solid #ddd;padding: 5px 10px ; font-size: 14px; text-align: center; }
+
+/* today */
+.today{padding: 20px 0px; width: 100%; max-width: 1200px; margin: 0 auto;position: relative; }
+.today h2, .today h4{text-align: center;}
+.todayBox{position: relative;}
+.pagenation{}
+.pagenation .swipernext{
+position: absolute;
+top: 0;
+left: -50px;
+z-index: 50;
+transform: translateY(-50%);
+}
+.pagenation .swiperprev{
+  position: absolute;
+  top: 0;
+  right: -50px;
+  z-index: 50;
+  transform: translateY(-50%);
+}
+
+/* footer */
+
+.footer{border-top: 1px solid #ddd ; width: 100%;}
+.footer .footer-inner{padding: 30px 60px; display: flex; justify-content: space-between;}
+.footer .footer-inner .info{}
+.footer .footer-inner .info ul{display: flex;}
+.footer .footer-inner .info ul li{}
+.footer .footer-inner .info ul li a{font-size: 12px; padding: 0 10px;}
+.footer .footer-inner .authbtn{}
+.footer .footer-inner .authbtn ul{display: flex;}
+.footer .footer-inner .authbtn ul li{margin: 0 10px;}
+.footer .footer-inner .authbtn ul li a {font-size: 12px; color: #666; border: 1px solid #666; padding: 10px;}

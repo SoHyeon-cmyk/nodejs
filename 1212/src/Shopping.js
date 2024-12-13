@@ -8,6 +8,8 @@ import New from './page/New.jsx';
 import Best from './page/Best.jsx';
 import Not from './page/Not.jsx';
 import Cart from './Cart.jsx';
+import Footer from './components/Footer.jsx';
+
 
 
 const DataContext = createContext
@@ -24,6 +26,7 @@ const Shopping = () => {
         <Route path='/new' element={<New/>}/>
         <Route path='/best' element={<Best/>}/>
         <Route path='/cart' element={<Cart/>}/>
+        <Route path='/footer' element={<Footer/>}/>
       </Routes>
     </Topnav>
   );

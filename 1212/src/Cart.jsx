@@ -1,11 +1,15 @@
 import React from 'react';
-import {useSelector} from 'react-redux'
+import {useSelector , useDispatch} from 'react-redux'
+import {addCount} from './Store'
 
 const Cart = () => {
   let state = useSelector((state)=>{return state})
   console.log(state.cart[0].name)
+  let dispatch = useDispatch()
   return (
+  
     <div className='cart'>
+      {state}의 장바구니
       <table>
         <thead>
           <tr>
@@ -21,7 +25,7 @@ const Cart = () => {
             <td>{state.cart[i].id}</td>
             <td>{state.cart[i].name}</td>
             <td>{state.cart[i].count}</td>
-            <td><button>+</button></td>
+            <td><button onClick={()=>{dispatch(addCount(state.cart[i]))}}>+</button></td>
           </tr>
           )}
         </tbody>
