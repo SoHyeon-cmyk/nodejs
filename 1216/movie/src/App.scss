@@ -1,0 +1,290 @@
+*{margin: 0; padding: 0; box-sizing: border-box;}
+a{text-decoration: none; color: hsl(0, 0%, 13%)}
+ul, ol{list-style: none;}
+.mt30{margin-top: 30px;}
+$table-max:1020px;
+$desktop-min:1440px;
+
+@mixin table{
+  @media (max-width: $table-max) {
+    @content;
+  }
+}
+@mixin desktop{
+  @media (max-width: $desktop-min) {
+    @content;
+  }
+}
+.loding{
+   width: 100%;
+   height: 90vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.App{
+   >.navbar{
+      width: 100%; 
+      padding: 0px 30px;
+      background: #f2e30f;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 50px;
+      .logo{
+         a{
+            font-size: 24px;
+            color: rgba(0,0,0,.7)
+         }
+      }
+      .nav{
+         ul{
+            display: flex;
+            li{
+               a{
+                  font-size: 14px;
+                  padding: 20px 10px;
+               }
+            }
+         }
+      }
+   }
+   .upComing{
+      
+      .upMovie{
+         width: 100%;
+         
+         .upComingImg{
+            width: 100%;
+            height: 90vh;
+            position: relative;
+            img{width: 100%; 
+               height: 100%;
+            }
+         }
+         .upComingInfo{
+            position: absolute;
+            top: 100px;
+            left: 50px;
+            padding: 30px;
+            background: #fffa;
+            width: 50%;
+            display: flex;
+            @media screen and (max-width : 920px) {
+               top: 50%;
+               left: 50%;
+               transform: translate(-50%, -50%);
+               flex-direction: column;
+            }
+            .upInfoImg{
+               margin-right: 20px;
+               flex-basis: 50%;
+               @media screen and (max-width : 920px) {
+                  flex-basis: 100%;
+                  text-align: center;
+               }
+               img{width: 100%;
+                  @media screen and (max-width : 920px) {
+                     width: 50%;
+                     margin-bottom: 20px;
+                  }
+               }
+            }
+            .upInfoText{
+               flex-basis: 50%;
+               .title{
+                  font-weight: bold;
+                  margin-bottom: 20px;
+               }
+               .overview{
+                  font-size: 14px;
+                  color: #666;
+                  margin-bottom: 5px;
+               }
+               .date{
+                  font-size: 12px;
+
+               }
+            }
+         }
+      }
+   }
+   .search{}
+   .mainContainer{
+      width: 100%;
+      h2{
+         text-align: center;
+         font-size: 24px;
+         color: #666;
+      }
+      .mainMovie{
+         padding: 20px 30px;
+         .movie{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            .aMovie{
+               .aMovie-card{
+                  position: relative;
+                  width: 240px;
+                  margin: 10px;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  background: #2f2f37;
+                  border-radius: 10px;
+                  .aMovieimgBox{
+                     position: relative;
+                     width: 100%;
+                     height: auto;
+                     overflow: hidden;
+                     img{
+                        width: 100%;
+                        height: 320px;
+                        border-radius: 10px 10px 0 0;
+                        transition: .5s;
+                        &:hover{
+                           transform: scale(1.2);
+                           
+                        }
+                     }
+                     .average{
+                        position: absolute;
+                        right: 10px;
+                        bottom:10px;
+                        border-radius: 50%;
+                        background:#fff;
+                        color: #2f2f37;
+                        padding: 10px;
+                        width: 50px;
+                        height: 50px;
+                        font-size: 12px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                     }
+                  }
+                  .aMovieInfo{
+                     display: flex;
+                     flex-direction: column;
+                     padding: 0 10px 10px;
+                     
+                     .aMovieTitle{
+                        font-size: 14px;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        text-align: left;
+                     }
+                     .aMovieDate{
+                        font-size: 12px;
+                        color: #9aa5b2;
+                     }
+                  }
+               }
+            }   
+         }
+         .more{
+            padding: 20px 0;
+            text-align: center;
+            .theMore{
+               padding: 10px 20px;
+               border: none;
+               background: pink;
+               color: #666;
+							 border-radius: 5px;
+            }
+         }
+      }
+   }
+   .movie{margin-top: 50px;
+      .movieBox{
+         text-align: center;
+            width: 100%;
+         img{
+            @media screen and (min-width: 1200px){
+               width: 70%;
+            }
+            @media screen and (max-width: 900px){
+               width: 80%;
+            }
+            @media screen and (max-width: 720px){
+               width: 100%;
+               padding: 0 20px;
+            }
+         }
+      }
+      .textBox{
+				padding: 30px 0;
+         @media screen and (min-width: 1200px){
+            width: 70%;
+            margin: 0 auto;
+         }     
+         @media screen and (max-width:1199px){
+            width: 80%;            margin: 0 auto;
+         }
+         @media screen and (max-width: 900px){
+            width: 80%;
+            margin: 0 auto;
+         }
+         @media screen and (max-width: 720px){
+            width: 100%;
+            padding: 0 20px;
+          ;
+            margin: 0 auto;
+         }
+         .textBoxTitle{font-size: 20px; color: #777;}
+         .textBoxOriginalTitle{font-size: 18px; color: #666;}
+         .textBoxOverview{margin-top: 20px; font-size: 14px; color: #666;}
+         .textBoxGenres{display: flex; margin-top: 10px;
+            span{
+							display: block;
+							padding-right: 20px;
+							font-size: 14px;
+							position: relative;
+							&:hover{
+								position: absolute;
+								top: 0;
+								right: 0;
+								width: 1px;
+								height: 10px;
+								background-color: #222;
+
+							}
+						}
+         }
+         .textBoxDate{
+					position: relative;
+					padding-left: 30px;
+					top: 20px;
+					font-size: 14px;
+					&::before{
+						content: "개봉일 :";
+						color: pink;
+					}
+				 }
+         .textBoxAverage{margin-top: 20px;}
+      }
+   }
+}
+
+.coming{
+	margin-top: 30px;
+	h2{
+		text-align: center;
+		font-size: 24px;
+	}
+	.comingWrap{
+		.nextMoiveWrap{
+			.nextMovieBox{
+				width: 100%;
+				height: 500px;
+				img{width: 100%; object-fit: cover; height: 100%;}
+			}
+		}
+		.nextMovieText{
+			p{}
+
+	}
+	}
+}
