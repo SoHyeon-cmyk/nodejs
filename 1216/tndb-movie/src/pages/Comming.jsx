@@ -4,12 +4,13 @@ import {useParams } from 'react-router-dom';
 
 
 const Comming = () => {
+  const APIKEY =process.env.REACT_APP_API_TNDB_KEY
   const {id} =useParams();
   const [isLoading, setLoading]=useState(true);
   const [comming, setComming] = useState(null);
 
   useEffect(()=>{
-    axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=546c72b99cf64514c2c03c7ef473011b&language=ko`)
+    axios.get(`https://api.themoviedb.org/3/movie/${APIKEY}?api_key=546c72b99cf64514c2c03c7ef473011b&language=ko`)
   .then(res=>{
       console.log(res)
       setComming(res.data);
