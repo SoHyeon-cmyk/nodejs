@@ -10,7 +10,13 @@ const Users = () => {
   
   const [users, setUsers] = useState([]);
   const [modal, setModal] = useState(false)
+  const [selectUser, setSelectUser] = useState(null)
   
+const userInfo = (info) =>{
+  setSelectUser(info)
+}
+
+
   useEffect(()=>{
     axios.get(`https://jsonplaceholder.typicode.com/users`)
       .then(response => setUsers(response.data))
@@ -28,7 +34,7 @@ const Users = () => {
 
 
             {
-              modal === true ? (<Modal user={users}/>):null
+              modal === true ? (<Modal userInfo={selectUser}/>):null
             }
               
           </div>
