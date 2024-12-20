@@ -1,10 +1,12 @@
-import './App.css';
 import axios from 'axios'
 import {useState, useEffect, createContext} from 'react'
 import {Route,Routes} from 'react-router-dom'
 import Home from './pages/Home';
 import Recipe from './pages/Recipe'
 import Category from './pages/Category'
+import Nav from './components/Nav'
+import './scss//App.scss'
+
 
 const DataContext = createContext()
 
@@ -33,10 +35,11 @@ function App({children}) {
 
   return (
     <DataContext.Provider value ={{data,loading}}>
+      <Nav/>
     <Routes>
       <Route path='/' element={<Home/>}/>
-      <Route path='/' element={<Recipe/>}/>
-      <Route path='/' element={<Category/>}/>
+      <Route path='/recipe/:id' element={<Recipe/>}/>
+      <Route path='category/:category' element={<Category/>}/>
     </Routes>
     </DataContext.Provider>
   );
