@@ -1,15 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React,{useContext, useState} from 'react';
 import { DataContext } from '../App';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation } from 'swiper/modules';
-import 'swiper/css'
+import { Navigation, Autoplay } from 'swiper/modules';
+import 'swiper/css';
 import 'swiper/css/navigation';
-import List from '../components/List';
-import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import List from '../conponents/List';
+import { GrNext } from "react-icons/gr";
+import { GrPrevious } from "react-icons/gr";
+
 
 const Home = () => {
-  const { data } = useContext(DataContext)
-  const [swiper, setSwiper] = useState(null)
+  const {data} = useContext(DataContext);
+  const [swiper, setSwiper] = useState(null);
 
   const handlePrev = () => {
     swiper?.slidePrev()
@@ -18,58 +20,55 @@ const Home = () => {
     swiper?.slideNext()
   }
   return (
-    <div>
-      <div className="home">
-        <div className="title">
-          <h2>추천 레시피</h2>
-        </div>
-        <Swiper className='swiperMain'
-          modules={[Navigation, Autoplay]}
+    <div className='home'>
+       <Swiper
+          modules={[Autoplay]}
+          className='swiperMain'
           spaceBetween={0}
-          slidesPerView={1}
+          slidesPerView={3}
           autoplay={{
-            delay: 2500,
+            delay: 1000,
             disableOnInteraction: false,
           }}
-          onSwiper={(swiper) => console.log(swiper)}>
 
+          onSwiper={(swiper) => setSwiper(swiper)}
+        >
           {
             data.slice(11, 30).map((item) => (
               <SwiperSlide key={item.id}>
-                <img src={item.ATT_FLIE_NO_MK} alt={item.HASH_TAG} />
-
+               <img src={item.ATT_FILE_NO_MK} alt={item.HASH_TAG} />
               </SwiperSlide>
             ))
           }
         </Swiper>
-      </div>
-
-      <div className="home">
-        <div className="title">
-          <h2>추천 레시피</h2>
-        </div>
+      <div className="title">
+        <h2> 추천 레시피</h2>
         <div className="homeList">
-          <Swiper
-            modules={[Navigation]}
-            spaceBetween={50}
-            slidesPerView={3}
-            onSwiper={(swiper) => setSwiper(swiper)}
-          >
-            {
-              data.slice(0, 10).map((item) => (
-                <SwiperSlide key={item.id}>
-                  <List data={[item]} />
-                </SwiperSlide>
-              ))
-            }
-
-          </Swiper>
-          <div className="swiper_btn">
-            <div className="swiperPrevBtn" onClick={handlePrev}><MdArrowBackIos /></div>
-            <div className="swiperNextBtn" onClick={handleNext}><MdArrowForwardIos /></div>
-          </div>
+        <Swiper
+          // install Swiper modules
+          modules={[Navigation]}
+         /*  navigation={true} */
+          spaceBetween={50}
+          slidesPerView={3}
+          onSwiper={(swiper) => setSwiper(swiper)}
+        >
+          {
+            data.slice(0, 10).map((item) => (
+              <SwiperSlide key={item.id}>
+                <List data={[item]} />
+              </SwiperSlide>
+            ))
+          }
+         
+        </Swiper>
+        <div className="swiper_btn">
+          <div className="swiperPrevBtn" onClick={handlePrev}><GrPrevious /></div>
+          <div className="swiperNextBtn" onClick={handleNext}><GrNext /></div>
+        </div>
         </div>
       </div>
+     
+     
     </div>
   );
 };
