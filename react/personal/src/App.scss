@@ -1,0 +1,21 @@
+*{margin: 0; padding: 0; box-sizing: border-box;}
+ul,li{list-style: none;}
+a{text-decoration: none; color: inherit;}
+
+
+  .nav{
+    padding:15px 20px;
+    justify-content: space-between;
+    display: flex;
+    color: #B8D548;
+    background: linear-gradient(to right, #2A2A2A , #B8D548 99%);
+    ul{
+      li{
+        display: flex;
+        gap: 15px;
+        color: #2A2A2A;
+        font-weight: 500;
+        font-size: 15px;
+      }
+    }
+  }
