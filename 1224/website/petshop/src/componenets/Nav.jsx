@@ -21,12 +21,12 @@ const Nav = () => {
           </div>
           <div className="nav">
             <ul className='loginAndsignup'>
-              <li><Link to="#">로그인</Link></li>
-              <li><Link to="#">회원가입</Link></li>
+              <li><Link to="/login">로그인</Link></li>
+              <li><Link to="/signup">회원가입</Link></li>
             </ul>
             <ul className="menu">
-              <li><Link to="">Home</Link></li>
-              <li><Link to="">About</Link></li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/about">About</Link></li>
             </ul>
           </div>
           <div className="movieNav">
@@ -56,7 +56,7 @@ const Nav = () => {
                         <Link to="/login">로그인</Link>
                       </li>
                       <li>
-                        <Link to="/singup">회원가입</Link>
+                        <Link to="/signup">회원가입</Link>
                       </li>
                     </ul>
                   </div>

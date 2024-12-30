@@ -5,7 +5,7 @@ import Footer from './componenets/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Login from './pages/Login';
-import Signup from './pages/Signup'
+import Signup from './pages/Signup';
 
 
 
