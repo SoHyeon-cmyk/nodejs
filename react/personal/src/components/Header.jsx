@@ -5,7 +5,9 @@ import { Link, NavLink } from 'react-router-dom';
 
 const Header = () => {
   const [activeNav, setActiveNav] = useState(1)
-
+  const activeStyle={
+    color:'#2A2A2A'
+  }
 
 
   return (
@@ -15,11 +17,11 @@ const Header = () => {
         <nav>
           <ul>
             <li>
-              <NavLink to="/" onClick={()=>{setActiveNav(1)}}>Home</NavLink>
-              <NavLink to="/search" onClick={()=>{setActiveNav(2)}}>Search</NavLink>
-              <NavLink to="/recipe" onClick={()=>{setActiveNav(3)}}>Recipe</NavLink>
-              <NavLink to="/comunity" onClick={()=>{setActiveNav(4)}}>Comunity</NavLink>
-              <NavLink to="/mypage" onClick={()=>{setActiveNav(5)}}>Mypage</NavLink>
+              <NavLink to="/" onClick={()=>{setActiveNav(1)}} style={({isActive})=>(isActive ? activeStyle : undefined)}>Home</NavLink>
+              <NavLink to="/search" onClick={()=>{setActiveNav(2)}}style={({isActive})=>(isActive ? activeStyle : undefined)}>Search</NavLink>
+              <NavLink to="/recipe" onClick={()=>{setActiveNav(3)}}style={({isActive})=>(isActive ? activeStyle : undefined)}>Recipe</NavLink>
+              <NavLink to="/comunity" onClick={()=>{setActiveNav(4)}}style={({isActive})=>(isActive ? activeStyle : undefined)}>Comunity</NavLink>
+              <NavLink to="/mypage" onClick={()=>{setActiveNav(5)}}style={({isActive})=>(isActive ? activeStyle : undefined)}>Mypage</NavLink>
             </li>
           </ul>
         </nav>
