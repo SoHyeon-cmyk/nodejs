@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { IoIosWine } from "react-icons/io";
 
 
 
-const Header = () => {
+const TopNav = () => {
   const [activeNav, setActiveNav] = useState(1)
   const activeStyle={
-    color:'#2A2A2A'
+    
   }
 
 
@@ -30,4 +31,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default TopNav;

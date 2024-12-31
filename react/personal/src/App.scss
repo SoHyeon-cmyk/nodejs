@@ -19,3 +19,126 @@ a{text-decoration: none; color: inherit;}
       }
     }
   }
+
+
+  .quickBtn {
+		position: fixed;
+		right: 5%;
+		bottom: 5%;
+		z-index: 999;
+
+		.quick-top {
+			width: 56px;
+			height: 56px;
+			border-radius: 50%;
+			background-color: #B8D548;
+			cursor: pointer;
+
+			.upArrow {
+				color: #2A2A2A;
+				font-size: 35px;
+			}
+		}
+	}
+
+
+  .mainslider{
+    width: 100%;
+    padding-top: 100px;
+    overflow: hidden;
+    position: relative;
+    transition: all .5s;
+
+    @media screen and (max-width: 1000px) {
+      display: flex;
+      flex-direction: column;
+      .cont{
+        width: 940px;
+        position: static;
+      }
+      .img_wrap{
+        width: 100%;
+        padding-left:0;
+        float: none;
+        padding-right:0;
+        .mainSwiper{
+          border-radius: 5px;
+          img{width: 100%; border-radius: 5px;}
+        }
+      }
+    }
+   
+    .img_wrap{
+      position: relative;
+      width: 54%;
+      padding-left: 10px;
+      float: right;
+      padding-right: 20px;
+      .mainSwiper{
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba($color: #000, $alpha: 0.2);
+        img{width: 100%; border-radius: 5px;}
+      }
+    }
+    .page_box{
+      position: absolute;
+      z-index: 11;
+      width: 940px;
+      bottom: 50px;
+      left: 50%;
+      margin-left: -470px;
+      .page{
+        position: relative;
+        width: 370px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        .swiper_progress_bar{
+          position: relative;
+          width: 150px;
+          height: 2px;
+          display: inline-block;
+          .slider-bar{
+            background: #b2b2b2;
+            height: 2px;
+            position: absolute;
+            width: inherit;
+            left: 0; bottom: 0;
+            .fill{
+              position: absolute;
+              top: 0;
+              left: 0;
+              background: #000;
+              width: 0;
+              height: 100%;
+              transition: width 1s linear;
+            }
+          }
+        }
+        .swiper-pagination{
+          width: auto;
+          font-size: 14px;
+          margin-left:160px;
+          display: inline-block;
+          span:first-child{font-weight: bold;}
+        }
+        .swiper_btn{
+          position: absolute;
+          right: 0;
+          top: 16px;
+          width: 105px;
+          text-align: center;
+          display: flex;
+          .swiperPrevBtn{
+            cursor: pointer;
+          }
+          .swiperNextBtn{
+            cursor: pointer;
+          }
+          .btn-auto{
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
