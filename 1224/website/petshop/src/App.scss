@@ -15,6 +15,11 @@ a{text-decoration: none;}
   top: 0;
   left: 0;
   z-index: 10;
+  transition: all .2s;
+  &.scrolled{
+    background-color: #fff;
+    transition: all .2s;
+  }
   .header-inner{
     position: relative;
     display: flex;
@@ -66,6 +71,7 @@ a{text-decoration: none;}
     }
     .movieNav{
       display: none;
+      
     }
     @media screen and (max-width: 720px){
         .nav{display: none;}
@@ -263,17 +269,41 @@ a{text-decoration: none;}
 
 .footer{
 
-  padding: 30px 0;
+  padding: 30px 20px;
   background: #333;
   color: #bbb;
   .container{
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    .foot-addr{
-      .footLogo{}
-      address{}
-      .copy{}
+
+  }
+}
+
+
+.about{
+  width: 100%;
+  padding: 0 20px;
+  margin-top: 120px;
+  .aboutWrap{
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    background: #eee;
+    padding: 20px;
+    .imgwrap{
+      width: 39%;
+      margin-right: 1%;
+      img{
+        width: 100%;
+      }
+    }
+    .cntWrap{
+      width: 60%;
+      .title{margin-bottom: 20px;}
+      .desc{font-size: 14px; margin-bottom: 30px;}
+      .price{}
     }
   }
 }
@@ -454,6 +484,29 @@ a{text-decoration: none;}
           font-size:24px;
         }
       }
+    }
+  }
+}
+
+.quickBtn {
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+  z-index: 999;
+  
+  
+  .quick-top {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: pink;
+    cursor: pointer;
+    border: none;
+
+
+    .upArrow {
+      color: #333;
+      font-size: 35px;
     }
   }
 }

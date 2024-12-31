@@ -6,22 +6,38 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import QuickButton from './componenets/QuickButton'
+import UploadPage from './componenets/UploadPage'
+import { createContext, useState } from 'react';
+import  data  from './data/datafresh';
 
 
+
+const DataContext = createContext()
 
 function App() {
+  let [petdata] = useState(data)
+  console.log(petdata)
+
   return (
-    <div className="App">
-        <Nav />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
-        <Footer />
-    </div>
+<DataContext.Provider value={{petdata}}>
+      <div className="App">
+          <Nav />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about/:id" element={<About />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/uploadpage" element={<UploadPage />} />
+          </Routes>
+          <Footer />
+          <QuickButton/>
+          
+      </div>
+</DataContext.Provider>
   );
 }
 
 export default App;
+
+export {DataContext}

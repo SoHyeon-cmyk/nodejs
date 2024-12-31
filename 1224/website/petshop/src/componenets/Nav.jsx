@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavLink, Link} from 'react-router-dom';
 import { RiMenu3Fill } from "react-icons/ri";
 import { MdOutlineClose } from "react-icons/md";
@@ -6,6 +6,24 @@ import $ from 'jquery';
 
 const Nav = () => {
   const [menuOpen, setMenuOpen]=useState(true);
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(()=>{
+   const handleScroll = () =>{
+
+     if(window.scrollY>50){
+       setIsScrolled(true) // 네비에 흰배경 띄우기
+     }else{
+       setIsScrolled(false)
+       
+     }
+     
+   }
+   window.addEventListener("scroll",handleScroll)
+   return() =>{
+     window.addEventListener("scroll",handleScroll)
+   }
+  },[])
   const activeStyle={
     color:'cadetblue'
   }
@@ -14,7 +32,7 @@ const Nav = () => {
     $('.mobile-header-drop').slideToggle(500);
   }
   return (
-    <div className='header'>
+    <div className={`header ${isScrolled ? "scrolled" : ""}`}>
         <div className="header-inner">
           <div className="logo">
             <Link to="/"><img src={process.env.PUBLIC_URL + "/img/logo.png"} alt="" /></Link>
