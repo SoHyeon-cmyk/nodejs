@@ -2,6 +2,7 @@ import React from "react";
 import { Autoplay } from "swiper/modules";
 
 import { Swiper, SwiperSlide } from "swiper/react";
+import {Link} from 'react-router-dom';
 
 // Import Swiper styles
 import "swiper/css";
@@ -12,9 +13,8 @@ import "swiper/css/autoplay";
 
 import freshData from '../data/datafresh';
 import "./FreshBox.scss";
-import { Link } from "react-router-dom";
 
-const FreshBox = () => {
+const Card = () => {
   return (
 
     <Swiper
@@ -29,32 +29,32 @@ const FreshBox = () => {
       spaceBetween={10} // 슬라이드 간 간격
       slidesPerView={2} // 한번에 보이는 슬라이드 개수
       breakpoints={{
-
-        768: {
-          slidesPerView: 3,
+             
+        768:{
+        slidesPerView:3,            
         },
-        1024: {
-          slidesPerView: 4,
+        1024:{
+        slidesPerView:4,
         }
-
+      
       }}
-      // onSwiper={(swiper) => console.log(swiper)} // 디버깅용
-      // onSlideChange={() => console.log("slide change")} // 디버깅용
+      onSwiper={(swiper) => console.log(swiper)} // 디버깅용
+      onSlideChange={() => console.log("slide change")} // 디버깅용
     >
       {freshData.map((item, idx) => (
-        <SwiperSlide className="freshWrap">
-          <Link to={`/about/${item.id}`}>
+        <SwiperSlide  className="freshWrap">
+        <Link to ={`/about/${item.id}`}>
             <img src={item.img} alt="" />
             <div className="txt" key={idx}>
-              <span className="freshNumber">{item.id + 1}</span>
+              <span className="freshNumber">{item.id+1}</span>
               <strong>{item.title}</strong>
               <span className="price">{item.price}</span>
             </div>
-          </Link>
+        </Link>
         </SwiperSlide>
       ))}
     </Swiper>
   );
 };
 
-export default FreshBox;
+export default Card;

@@ -1,13 +1,10 @@
 import React from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import './login.scss'
+import {useNavigate} from 'react-router-dom';
+import './login.scss';
 
 const Login = () => {
-
-  const navigate = useNavigate()
-
-  
+  const navigate = useNavigate();
   const onFinish = (values) => {
     console.log('Success:', values);
   };
@@ -15,12 +12,10 @@ const Login = () => {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-
-
   return (
     <div className='login'>
-      <h2>로그인</h2>
-      <div className="loginBox">
+        <h2>로그인</h2>
+        <div className="loginBox">
         <Form
           name="basic"
           labelCol={{ span: 8 }}
@@ -48,16 +43,16 @@ const Login = () => {
           </Form.Item>
 
           <Form.Item name="remember" valuePropName="checked" label={null}>
-            <Checkbox>아이디 저장</Checkbox>
+            <Checkbox danger>아이디 저장</Checkbox>
           </Form.Item>
 
           <Form.Item label={null}>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" danger htmlType="submit">
               로그인
             </Button>
           </Form.Item>
         </Form>
-      </div>
+        </div>
     </div>
   );
 };

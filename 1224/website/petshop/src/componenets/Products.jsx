@@ -1,90 +1,54 @@
-import React from 'react';
-import { useNavigate ,Link} from 'react-router-dom';
-import './products.scss'
-import { LuCat } from "react-icons/lu";
+import React, { useEffect, useState } from 'react';
+import {useNavigate, Link} from 'react-router-dom'
+import { GiHollowCat } from "react-icons/gi";
 import axios from 'axios';
-
+import './products.scss'
 
 
 const Products = () => {
-  const navigate = useNavigate()
-  // axios.get('http://localhost:3000/products').then((res)=>{
-  //   console.log(res)
-  // }).catch((err)=>{
-  //   console.log(err)
-  // })
+  const [products, setProducts] = useState([])
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    let url = "http://localhost:8080/products"
+    axios.get(url).then((result)=>{
+      const products = result.data.products;
+      console.log(products)
+      setProducts(products)
+    }).catch((err)=>{
+      console.log(err)
+    })
+  },[])
 
   return (
     <div className='products'>
       <h2>Products</h2>
       <p>상품업로드</p>
-      <button className='button' onClick={()=>navigate('/uploadpage')}>상품 업로드</button>
-      <div className="products-list">
+      <button className='button' onClick={() =>navigate('/uploadpage')}>상품 업로드</button>
+      <div className="product-list">
+        {
+          products.map((product) =>{
+            return (
+              <div className="product-card" key={product.id}>
+              <Link to={`productpage/${product.id}`}>
+                <div className="productImg">
+                  <img src={process.env.PUBLIC_URL + product.imgUrl} alt={product.name} />
+                </div>
+                <div className="productCnt">
+                  <span className="product-name">{product.name}</span>
+                  <span className="product-price">{product.price}</span>
+                  <span className="product-seller">
+                  <GiHollowCat className='icon' />
+                  <strong>{product.seller}</strong>
+                  </span>
+                </div>
+              </Link>
+            </div>
+            )
+          })
+        }
 
-        <div className="products-card">
-          <Link to="">
-          <div className="productsImg">
-            <img src={process.env.PUBLIC_URL + 'img/cat01.jpg'} alt="" />
-          </div>
-          <div className="productsCnt">
-            <span className="products-name">고양이 사료</span>
-            <span className="products-price">50000</span>
-            <span className="products-seller">
-            <LuCat />
-            <strong>캣컵</strong>
-            </span>
-          </div>
-          </Link>
-        </div>
 
-        <div className="products-card">
-          <Link to="">
-          <div className="productsImg">
-            <img src={process.env.PUBLIC_URL + 'img/cat01.jpg'} alt="" />
-          </div>
-          <div className="productsCnt">
-            <span className="products-name">고양이 사료</span>
-            <span className="products-price">50000</span>
-            <span className="products-seller">
-            <LuCat />
-            <strong>캣컵</strong>
-            </span>
-          </div>
-          </Link>
-        </div>
-
-        <div className="products-card">
-          <Link to="">
-          <div className="productsImg">
-            <img src={process.env.PUBLIC_URL + 'img/cat01.jpg'} alt="" />
-          </div>
-          <div className="productsCnt">
-            <span className="products-name">고양이 사료</span>
-            <span className="products-price">50000</span>
-            <span className="products-seller">
-            <LuCat />
-            <strong>캣컵</strong>
-            </span>
-          </div>
-          </Link>
-        </div>
-        
-        <div className="products-card">
-          <Link to="">
-          <div className="productsImg">
-            <img src={process.env.PUBLIC_URL + 'img/cat01.jpg'} alt="" />
-          </div>
-          <div className="productsCnt">
-            <span className="products-name">고양이 사료</span>
-            <span className="products-price">50000</span>
-            <span className="products-seller">
-            <LuCat />
-            <strong>캣컵</strong>
-            </span>
-          </div>
-          </Link>
-        </div>
-        
       </div>
     </div>
   );

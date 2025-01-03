@@ -1,5 +1,4 @@
-import React, {useState, useRef,/* , useEffect */
-useEffect} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import { IoCheckmark } from "react-icons/io5";
 import './Signup.scss';
 
@@ -20,25 +19,13 @@ const SignUp = () => {
   const [phone, setPhone] = useState('') //휴대폰
   const [email, setEmail] = useState('') //이메일
   const [birth, setBirth] = useState('') //생년월일
-  const [allChecked ,setAllChcked] = useState(false)
-  const [privacyChecked ,setPrivacyChcked] = useState(true)
-  const [termsChecked ,setTermsChcked] = useState(true)
-  const [marketinChecked ,setMarketinChcked] = useState(true)
 
-  const handleAllCheck = () => {
-    setAllChcked(!allChecked)
-    setPrivacyChcked(!privacyChecked)
-    setTermsChcked(!termsChecked)
-    setMarketinChcked(!marketinChecked)
-  }
+  const [allChecked, setAllChecked] = useState(false);
+  const [termsChecked, setTermsChecked] = useState(false);
+  const [privacyChecked, setPrivacyChecked] = useState(false);
+  const [marketingChecked, setMarketingChecked] = useState(false);
 
-  useEffect(()=>{
-    if(termsChecked && privacyChecked && marketinChecked){
-      setAllChcked(true)
-    }else{
-      setAllChcked(false)
-    }
-  },[termsChecked,privacyChecked,marketinChecked])
+ /*  const [isSubmitted, setIsSubmitted] = useState(false) */
 
   const idRule=/^[a-z0-9]{4,16}$/;
   const pwRule=/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,16}$/
@@ -57,6 +44,21 @@ const SignUp = () => {
     birth: {text:'', color: ''},
   })
 
+
+  const handleAllCheck = () =>{
+    setAllChecked(!allChecked)
+    setTermsChecked(!termsChecked)
+    setPrivacyChecked(!privacyChecked)
+    setMarketingChecked(!marketingChecked)
+  }
+  useEffect(()=>{
+    if(termsChecked&&privacyChecked&&marketingChecked){
+      setAllChecked(true)
+    }else{
+      setAllChecked(false)
+    }
+
+  }, [termsChecked, privacyChecked, marketingChecked])
 
   const handleMessageChange=(key, text, color) =>{
     setMessages((prevMessages) =>({
@@ -137,39 +139,49 @@ const SignUp = () => {
 
   //이메일
   const handleEmail = (event) =>{
-      const newEmailValue= event.target.value;
-      setEmail(newEmailValue)
-      if(emailRule.test(newEmailValue)){
-         handleMessageChange('email', '사용 가능한 이메일입니다.', 'success-color');
-      }else if(newEmailValue===""){
-         handleMessageChange('email', '이메일을 입력해주세요', 'error-color');
-         
-      }else{
-         handleMessageChange('email', '이메일을 다시 한번 확인해주세요', 'error-color');
-         setEmail('');
-      }
-   }
+		const newEmailValue= event.target.value;
+		setEmail(newEmailValue)
+		if(emailRule.test(newEmailValue)){
+			handleMessageChange('email', '사용 가능한 이메일입니다.', 'success-color');
+		}else if(newEmailValue===""){
+			handleMessageChange('email', '이메일을 입력해주세요', 'error-color');
+			
+		}else{
+			handleMessageChange('email', '이메일을 다시 한번 확인해주세요', 'error-color');
+			setEmail('');
+		}
+	}
 
   //birthRule
   const handleBirth = (event) =>{
-      const newBirthValue= event.target.value;
-      setBirth(newBirthValue)
-      if(birthRule.test(newBirthValue)){
-         handleMessageChange('birth', '올바른 생년월일입니다', 'success-color');
-      }else if(newBirthValue===""){
-         handleMessageChange('birth', '생년월일을 입력해주세요', 'error-color');
-      }else{
-         handleMessageChange('birth', '생년월일을 다시 한번 확인해주세요', 'error-color');
-         setBirth('');
-      }
-   }
+		const newBirthValue= event.target.value;
+		setBirth(newBirthValue)
+		if(birthRule.test(newBirthValue)){
+			handleMessageChange('birth', '올바른 생년월일입니다', 'success-color');
+		}else if(newBirthValue===""){
+			handleMessageChange('birth', '생년월일을 입력해주세요', 'error-color');
+		}else{
+			handleMessageChange('birth', '생년월일을 다시 한번 확인해주세요', 'error-color');
+			setBirth('');
+		}
+	}
   const handleSubmit = (event) =>{
     event.preventDefault()
 
-    if(idRule.test &&pwRule.test &&pw2.test &&nameRule.test &&phoneRule.test &&emailRule.test &&birthRule.test && termsChecked.test && marketinChecked.test && privacyChecked){
-      console.log('회원가입을 축하합니다')
-    }else{}
-
+    if(
+      idRule.test(id) &&
+      pwRule.test(pw) &&
+      pw2 === pw &&
+      nameRule.test(name) &&
+      phoneRule.test(phone) &&
+      emailRule.test(email) &&
+      birthRule.test(birth) &&
+      termsChecked &&
+      privacyChecked &&
+      marketingChecked 
+    ){
+      console.log('회원가입을 축하합니다.')
+    }else{ console.log('에러')}
   }
   return (
     <div className='signWrap'>
@@ -213,27 +225,27 @@ const SignUp = () => {
               </div>
             </li>
             <li className="email-section">
-                     <div className="area-style">
-                        <label htmlFor="emailArea" className='label-style'>이메일</label>
-                        <input ref={emailInputRef} type="text" id="emailArea" required size={20} value={email} onChange={(event) => {setEmail(event.target.value)}} onBlur={handleEmail}/>
-                        <span className={`mes-style ${messages.email.color}`}>{messages.email.text}</span>
-                     </div>
-                  </li>
+							<div className="area-style">
+								<label htmlFor="emailArea" className='label-style'>이메일</label>
+								<input ref={emailInputRef} type="text" id="emailArea" required size={20} value={email} onChange={(event) => {setEmail(event.target.value)}} onBlur={handleEmail}/>
+								<span className={`mes-style ${messages.email.color}`}>{messages.email.text}</span>
+							</div>
+						</li>
             <li className="birth-section">
-                     <div className="area-style">
-                        <label htmlFor="birthArea" className='label-style'>생년월일</label>
-                        <input ref={birthInputRef} type="text" id="birthArea" required size={8} value={birth} onChange={(event) => {setBirth(event.target.value)}} onBlur={handleBirth}/>
-                        <span className={`mes-style ${messages.birth.color}`}>{messages.birth.text}</span>
+							<div className="area-style">
+								<label htmlFor="birthArea" className='label-style'>생년월일</label>
+								<input ref={birthInputRef} type="text" id="birthArea" required size={8} value={birth} onChange={(event) => {setBirth(event.target.value)}} onBlur={handleBirth}/>
+								<span className={`mes-style ${messages.birth.color}`}>{messages.birth.text}</span>
                 <p className="help-style"><IoCheckmark /> - 를 제외한 8글자 ex) 19900101</p>
-                     </div>
-                  </li>
+							</div>
+						</li>
             <li>
               <br />
               <hr />
               <br />
             </li> 
             <li id="terms-section">
-              <input type="checkbox" id="allCheck" className="chick-style" checked={allChecked} onChange={handleAllCheck}/>
+              <input type="checkbox" id="allCheck" className="chick-style" checked={allChecked} onChange={handleAllCheck} />
               <label htmlFor="allCheck">
                 이용약관 및 개인정보수집 및 이용, 쇼핑정보 수신(선택)에 모두 동의합니다.
               </label>
@@ -260,7 +272,7 @@ const SignUp = () => {
               </div>
               <p>
                 <span>이용약관에 동의하십니까?</span>
-                <input type="checkbox" id="terms-check1" className='check-style' checked={termsChecked} onChange={() => setTermsChcked(!termsChecked)}/>
+                <input type="checkbox" id="terms-check1" className='check-style' checked={termsChecked} onChange={() => setTermsChecked(!termsChecked)}/>
                 <label htmlFor="terms-check1">  동의함</label>
               </p>
 
@@ -296,8 +308,9 @@ const SignUp = () => {
               </div>
               <p>
                 <span>개인정보 수집 및 이용에 동의하십니까?</span>
+                
+                <input type="checkbox" id="terms-check2" className='check-style'  checked={privacyChecked} onChange={() => setPrivacyChecked(!privacyChecked)}/>
                 <label htmlFor="terms-check2">  동의함</label>
-                <input type="checkbox" id="terms-check2" className='check-style' checked={privacyChecked} onChange={() => setPrivacyChcked(!privacyChecked)}/>
               </p>
 
               <h3>[필수] 쇼핑정보 수신 동의</h3>
@@ -328,12 +341,12 @@ const SignUp = () => {
               </div>
               <p>
                 <span>SMS 수신을 동의하십니까?</span>
+                <input type="checkbox" id="terms-check3" className='check-style' checked={marketingChecked} onChange={() => setMarketingChecked(!marketingChecked)} />
                 <label htmlFor="terms-check3">  동의함</label>
-                <input type="checkbox" id="terms-check3" className='check-style' checked={marketinChecked} onChange={() => setMarketinChcked(!marketinChecked)}/>
               </p>
             </li>
             <li className="submit-section">
-              <button className="submit-style" type='submit'>회원가입</button>
+              <button className="submit-style" type="submit">회원가입</button>
             </li>
           </ul>
         </fieldset>

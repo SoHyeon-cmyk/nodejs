@@ -6,21 +6,21 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import QuickButton from './componenets/QuickButton'
-import UploadPage from './componenets/UploadPage'
+import QuickButton from './componenets/QuickButton';
+import ProductPage from './componenets/ProductPage';
+import UploadPage from './componenets/UploadPage';
 import { createContext, useState } from 'react';
-import  data  from './data/datafresh';
+import data from './data/datafresh';
 
 
-
-const DataContext = createContext()
+const DataContext=createContext();
 
 function App() {
-  let [petdata] = useState(data)
-  console.log(petdata)
 
+  let [petData]=useState(data);
+  console.log(petData)
   return (
-<DataContext.Provider value={{petdata}}>
+    <DataContext.Provider value={{petData}}>
       <div className="App">
           <Nav />
           <Routes>
@@ -29,15 +29,14 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/uploadpage" element={<UploadPage />} />
+            <Route path="/productpage" element={<ProductPage />} />
           </Routes>
           <Footer />
-          <QuickButton/>
-          
+          <QuickButton />
       </div>
-</DataContext.Provider>
+    </DataContext.Provider>
   );
 }
 
 export default App;
-
 export {DataContext}

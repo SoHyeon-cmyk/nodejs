@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {NavLink, Link} from 'react-router-dom';
 import { RiMenu3Fill } from "react-icons/ri";
 import { MdOutlineClose } from "react-icons/md";
@@ -6,24 +6,24 @@ import $ from 'jquery';
 
 const Nav = () => {
   const [menuOpen, setMenuOpen]=useState(true);
-  const [isScrolled, setIsScrolled] = useState(false)
+  const [isScrolled, setIsScrolled]=useState(false);
 
   useEffect(()=>{
-   const handleScroll = () =>{
+    const handleScroll = () =>{
+      if(window.scrollY> 50){
+        setIsScrolled(true) // 흰배경 적용
+      } else{
+        setIsScrolled(false) // 흰배경 제거
+      } 
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () =>{ 
+      window.addEventListener("scroll", handleScroll);
+    }
+  }, [])
 
-     if(window.scrollY>50){
-       setIsScrolled(true) // 네비에 흰배경 띄우기
-     }else{
-       setIsScrolled(false)
-       
-     }
-     
-   }
-   window.addEventListener("scroll",handleScroll)
-   return() =>{
-     window.addEventListener("scroll",handleScroll)
-   }
-  },[])
+  
+
   const activeStyle={
     color:'cadetblue'
   }
@@ -32,7 +32,7 @@ const Nav = () => {
     $('.mobile-header-drop').slideToggle(500);
   }
   return (
-    <div className={`header ${isScrolled ? "scrolled" : ""}`}>
+    <div className={`header ${isScrolled ? "scrolled": ""}`}>
         <div className="header-inner">
           <div className="logo">
             <Link to="/"><img src={process.env.PUBLIC_URL + "/img/logo.png"} alt="" /></Link>
@@ -43,8 +43,8 @@ const Nav = () => {
               <li><Link to="/signup">회원가입</Link></li>
             </ul>
             <ul className="menu">
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/about">About</Link></li>
+              <li><Link to="">Home</Link></li>
+              <li><Link to="">About</Link></li>
             </ul>
           </div>
           <div className="movieNav">
@@ -74,7 +74,7 @@ const Nav = () => {
                         <Link to="/login">로그인</Link>
                       </li>
                       <li>
-                        <Link to="/signup">회원가입</Link>
+                        <Link to="/singup">회원가입</Link>
                       </li>
                     </ul>
                   </div>

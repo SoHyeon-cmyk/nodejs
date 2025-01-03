@@ -1,21 +1,23 @@
 .signWrap{
   width: 100%;
-  max-width: 1000px;
   margin: 150px auto;
+  max-width: 1000px;
   padding: 0 20px;
   h2{
     border-bottom: 5px double #ddd;
     font-size: 20px;
     padding-bottom: 5px;
-    color: #555;
+    color: #ccc;
   }
   form{
     .signUpArea{
+      border: none;
       ul{
         margin-top: 20px;
         >li{
           margin-bottom: 20px;
           .area-style{
+
             label{
               display: block;
               color: #ccc;
@@ -26,15 +28,14 @@
               padding: 20px 30px;
               border: 1px solid #ddd;
             }
-            .mes-style{
+            .mes-styel{
               font-size: 14px;
             }
-            .success-color{color: green;}
-            .error-color{color: red;}
-            span{}
+            .success-color{color: green}
+            .error-color{color: red}
             .help-style{
               font-size: 12px;
-              color: rgb(105, 105, 105);
+              color: rgb(105,105,105)
             }
           }
         }
@@ -42,7 +43,6 @@
     }
   }
 }
-
 #terms-section{
   color: #666;
   input{}
@@ -63,7 +63,7 @@
   >p{
     span{
       margin-right: 5px;
-      color: #222;
+      color: #333;
     }
   }
 }
@@ -76,6 +76,6 @@
     background: #858585;
     color: #fff;
     font-size: 1.5rem;
-    border: none;
+    border: none
   }
 }

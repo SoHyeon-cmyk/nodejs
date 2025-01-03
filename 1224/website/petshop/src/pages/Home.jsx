@@ -14,7 +14,7 @@ const Home = () => {
       <BestItem />
       <FreshBox />
       <Location/>
-      <Products/>
+      <Products />
     </div>
   );
 };
