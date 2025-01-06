@@ -7,7 +7,6 @@ import About from './pages/About';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import QuickButton from './componenets/QuickButton';
-import ProductPage from './componenets/ProductPage';
 import UploadPage from './componenets/UploadPage';
 import { createContext, useState } from 'react';
 import data from './data/datafresh';
@@ -29,7 +28,6 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/uploadpage" element={<UploadPage />} />
-            <Route path="/productpage" element={<ProductPage />} />
           </Routes>
           <Footer />
           <QuickButton />

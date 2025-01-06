@@ -1,57 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import {useNavigate, Link} from 'react-router-dom'
+import React,{useState, useEffect} from 'react';
+import {useParams, useNavigate} from 'react-router-dom';
+import './productspage.scss';
 import { GiHollowCat } from "react-icons/gi";
 import axios from 'axios';
-import './products.scss'
 
 
-const Products = () => {
-  const [products, setProducts] = useState([])
+const ProductPage = () => {
+  const {id} = useParams();
   const navigate = useNavigate();
-
+  const [product,setProduct] = useState([]);
   useEffect(()=>{
-    let url = "http://localhost:8080/products"
-    axios.get(url).then((result)=>{
-      const products = result.data.products;
-      console.log(products)
-      setProducts(products)
-    }).catch((err)=>{
-      console.log(err)
+    axios.get(`http://localhost:8080/products/${id}`)
+    .then((res)=>{
+      //setProduct(res.data.product);
+      setProduct(res.data.product);
+     // console.log(res.data.product);
+      console.log(res.data.product);
     })
-  },[])
+    .catch((err)=> console.log(err))
+  },[id])
 
   return (
-    <div className='products'>
-      <h2>Products</h2>
-      <p>상품업로드</p>
-      <button className='button' onClick={() =>navigate('/uploadpage')}>상품 업로드</button>
-      <div className="product-list">
-        {
-          products.map((product) =>{
-            return (
-              <div className="product-card" key={product.id}>
-              <Link to={`productpage/${product.id}`}>
-                <div className="productImg">
-                  <img src={process.env.PUBLIC_URL + product.imgUrl} alt={product.name} />
-                </div>
-                <div className="productCnt">
-                  <span className="product-name">{product.name}</span>
-                  <span className="product-price">{product.price}</span>
-                  <span className="product-seller">
-                  <GiHollowCat className='icon' />
-                  <strong>{product.seller}</strong>
-                  </span>
-                </div>
-              </Link>
-            </div>
-            )
-          })
-        }
-
-
+    <div className='productpage'>
+      <button onClick={() => navigate(-1)} className='back-btn'>이전화면</button>
+      <h1>상품 상세 페이지</h1>
+      <div className="image-box">
+      <img src={process.env.PUBLIC_URL + `/${product.imgUrl}`} alt={product.name} />
+      </div>
+      <div className="profile-box">
+       <GiHollowCat className='icon' />
+       <div className="product-seller">{product.seller}</div>
+      </div>
+      <div className="contents-box">
+        <div className="name">{product.name}</div>
+        <div className="desc">{product.description}</div>
+        <div className="price">{product.price}</div>
+        <div className="createAt">2025.01.03</div>
       </div>
     </div>
   );
 };
 
-export default Products;
+export default ProductPage;
