@@ -7,7 +7,7 @@ import {API_URL} from '../config/constants';
 
 
 
-const Signup = () => {
+const SignUp = () => {
   const history = useNavigate();
   const idInputRef= useRef(null)
   const pwInputRef= useRef(null)
@@ -394,4 +394,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignUp;

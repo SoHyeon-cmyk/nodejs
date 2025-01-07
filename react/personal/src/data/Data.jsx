@@ -31,10 +31,6 @@ fs.writeFileSync('data.json', string_json);
   return (
     <div>
 
-{/* https://www.data.go.kr/data/15048756/fileData.do?recommendDataYn=Y#tab-layer-openapi */}
-
-
-
 
     </div>
   );
