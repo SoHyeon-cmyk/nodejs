@@ -19,7 +19,9 @@ function App() {
         <Route path="/comunity" element={<Comunity/>}></Route>
         <Route path="/mypage" element={<Mypage/>}></Route>
       </Routes>
+
       <QuickBtn/>
+
     </>
 
   );

@@ -1,0 +1,110 @@
+*{margin: 0; padding: 0; box-sizing: border-box;}
+ul,li{list-style: none;}
+a{text-decoration: none; color: #2A2A2A;}
+
+
+  // .nav{
+  //   padding:15px 20px;
+  //   justify-content: space-between;
+  //   display: flex;
+  //   color: #B8D548;
+  //   background: linear-gradient(to right, #2A2A2A , #B8D548 99%);
+  //   ul{
+  //     li{
+  //       display: flex;
+  //       gap: 15px;
+  //       color: #2A2A2A;
+  //       font-weight: 500;
+  //       font-size: 15px;
+  //     }
+  //   }
+  // }
+
+  .nav{
+    padding:10px 60px;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    overflow: hidden;
+        ul{
+          border: 1px solid #2A2A2A;
+          border-radius: 50px;
+          padding: 10px 40px;
+          
+      li{
+        display: flex;
+        gap: 45px;
+        font-weight: 500;
+        font-size: 15px;
+        transition: .3s all ease-in-out;
+        a {
+          position: relative;
+          
+        
+          &::after {
+            content: '';
+            position: absolute;
+            left: 3px;
+            bottom: 0;
+            width: 0;
+            height: 2.5px;
+            // background: linear-gradient(90deg, #2A2A2A, #B8D548);
+            background-color: #2A2A2A;
+            transition: width 0.3s ease;
+            border-radius: 50px;
+          }
+        
+          &:hover::after {
+            width: 115%;
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+  .quickBtn {
+		position: fixed;
+		right: 5%;
+		bottom: 5%;
+		z-index: 999;
+
+		.quick-top {
+			width: 56px;
+			height: 56px;
+			border-radius: 50%;
+			background-color: #B8D548;
+			cursor: pointer;
+
+			.upArrow {
+				color: #2A2A2A;
+				font-size: 35px;
+			}
+		}
+	}
+
+
+  .swiper{
+    width: 1500px;
+    height: 500px;
+    margin: 60px auto;
+    img{
+      background-size: auto;
+    }
+  }
+
+  .footer{
+    width: 100%;
+    padding:30px 60px;
+    margin: auto;
+    background-color: #2A2A2A;
+    position: absolute;
+    bottom: 0;
+    p{
+      color: #B8D548;
+    }
+  }
+  
+  
