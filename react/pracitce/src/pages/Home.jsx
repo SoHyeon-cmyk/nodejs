@@ -6,8 +6,7 @@ const Home = () => {
   
   return (
 <div>
-  <Mainslide/>
-    <img src="/public/image/banner01.png" alt="" />
+ 
 </div>
   );
 };

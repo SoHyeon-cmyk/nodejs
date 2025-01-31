@@ -2,7 +2,6 @@
 // import data from '../data.js';
 import Card from '../Card.jsx';
 import Today from '../components/Today.jsx';
-import { Navigate } from 'react-router-dom';
 
 const Main = () => {
   // let [shopping]=useState(data);
@@ -35,7 +34,7 @@ const Main = () => {
             <Card />
           </div>
         </div>
-        <Today/>
+        <Today />
       </main>
     </div>
   );

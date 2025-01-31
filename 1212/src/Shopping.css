@@ -1,5 +1,6 @@
 ul{list-style: none;}
-a{text-decoration: none; color: #222;}
+a{text-decoration: none; color: #222}
+
 .main-bg{
   /* height: 500px; */
  /*  background-image: url('./img/img.jpg'); */
@@ -12,17 +13,17 @@ a{text-decoration: none; color: #222;}
 .title p{
   line-height: 200%;
 }
-.in{}
+
 .in h2, .in h1{text-align: center;}
-.cards-container{width: 1200px; margin: 0 auto; width: 100%;display: flex; 
-  justify-content: space-between; padding: 0 20px; box-sizing: border-box;}
-.cards-container a{text-decoration: none; }
-.alert{width: 100%; text-align: center; background: red; color: #fff; padding: 0 10px;}
+.row{max-width: 1200px; margin: 0 auto; width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+}
+
 .price{
   font-weight: bold;
-}
-.in .row{
-  display: flex;
 }
 .s-title{
   font-size: 16px;
@@ -31,45 +32,75 @@ a{text-decoration: none; color: #222;}
   color: #959595;
   font-size: 12px;
 }
-.cartTable{width: 100%; padding: 0 30px; box-sizing: border-box; max-width: 1000px; margin: 0 auto;}
-.cartTable table{border-collapse: collapse; border: 1px solid #ddd;}
+.detail{padding: 50px;}
+.detail .col{text-align: center;}
+.detail .col img{width: 80%}
+.detail .row{display: flex; flex-direction: column;}
+.detail .row h4{padding: 10px 0; font-size: 16px;}
+.detail .row p{font-size: 14px; padding: 5px 0;}
+.detail .row .btn{border: none; background: #770469; padding: 10px; color: #fff; cursor: pointer;}
+.cards-container{
+  max-width: 1200px; margin: 0 auto; width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+ }
+ .cards-container a{text-decoration: none; color: #333}
+ .alert{width: 100%; text-align: center; background: red; color: #fff; padding: 20px 0;}
 
-.cartTable table tr th{border: 1px solid #ddd; padding: 5px 20px; font-size: 14px;}
-.cartTable table tr th:first-child{width: 10%;}
-.cartTable table tr th:nth-child(2){width: 70%;}
-.cartTable table tr th:nth-child(3){width: 10%;}
-.cartTable table tr th:nth-child(4){width: 10%;}
-.cartTable table tr th td{border: 1px solid #ddd;padding: 5px 10px ; font-size: 14px; text-align: center; }
+ .cartTable{
+  width: 100%;
+  padding: 0 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+ }
+ .cartTable table{
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+ }
+
+ .cartTable table tr th{border: 1px solid #ddd; padding: 5px 20px; font-size: 14px;}
+ .cartTable table tr th:nth-child(1){width: 10%;}
+ .cartTable table tr th:nth-child(2){width: 70%;}
+ .cartTable table tr th:nth-child(3){width: 10%;}
+ .cartTable table tr th:nth-child(4){width: 10%;}
+ .cartTable table tr td{border: 1px solid #ddd;padding: 5px 20px; font-size: 14px;  text-align: center;}
 
 /* today */
-.today{padding: 20px 0px; width: 100%; max-width: 1200px; margin: 0 auto;position: relative; }
+.today{ padding: 20px 0; width: 100%; max-width: 1200px; margin: 0 auto; }
 .today h2, .today h4{text-align: center;}
 .todayBox{position: relative;}
+.todayBox{}
 .pagenation{}
-.pagenation .swipernext{
-position: absolute;
-top: 0;
-left: -50px;
-z-index: 50;
-transform: translateY(-50%);
-}
 .pagenation .swiperprev{
   position: absolute;
-  top: 0;
-  right: -50px;
-  z-index: 50;
+  top:50%;
+  left:-30px;
+  z-index: 99999;
+  transform: translateY(-50%);
+}
+.pagenation .swipernext{
+  position: absolute;
+  top:50%;
+  right:-30px;
+  z-index: 99999;
   transform: translateY(-50%);
 }
 
 /* footer */
-
-.footer{border-top: 1px solid #ddd ; width: 100%;}
-.footer .footer-inner{padding: 30px 60px; display: flex; justify-content: space-between;}
-.footer .footer-inner .info{}
+.footer{ border-top: 1px solid #ddd; width: 100%;}
+.footer .footer-inner{
+  padding: 30px 60px;
+  display: flex;
+  justify-content: space-between;
+}
 .footer .footer-inner .info ul{display: flex;}
-.footer .footer-inner .info ul li{}
 .footer .footer-inner .info ul li a{font-size: 12px; padding: 0 10px;}
-.footer .footer-inner .authbtn{}
 .footer .footer-inner .authbtn ul{display: flex;}
 .footer .footer-inner .authbtn ul li{margin: 0 10px;}
-.footer .footer-inner .authbtn ul li a {font-size: 12px; color: #666; border: 1px solid #666; padding: 10px;}
+.footer .footer-inner .authbtn ul li a{font-size: 12px; color: #666;
+    border: 1px solid #666;
+    padding: 10px;
+}
