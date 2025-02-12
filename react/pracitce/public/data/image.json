@@ -1,6 +1,7 @@
 [
-  { "id": 1, "src": "/public/image/banner01.png", "alt": "Banner 01" },
-  { "id": 2, "src": "/public/image/banner02.png", "alt": "Banner 02" },
-  { "id": 3, "src": "/public/image/banner03.png", "alt": "Banner 03" },
-  { "id": 4, "src": "/public/image/banner04.png", "alt": "Banner 03" }
+   "image/jpg/banner01.png",
+   "image/jpg/banner02.png",
+   "image/jpg/banner03.png",
+   "image/jpg/banner04.png"
 ]
+
